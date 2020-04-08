@@ -90,9 +90,9 @@ class LoginPage extends Component {
     console.log(`props`, JSON.stringify(this.props))
  //   const { t } = this.props;
     let isSuccess;
-    if (this.props.login.response) {
-      console.log(this.props.login.response)
-      isSuccess = this.props.login.response.success;
+    if (this.props.login.users) {
+      console.log(this.props.login.users)
+      isSuccess = this.props.login.users.success;
       if(isSuccess) {
         this.props.history.push('/locationIdentify');
       }

@@ -6,6 +6,8 @@ import {FormControl, InputGroup, Container, Image, Col, Row, Alert, Button,ListG
 import SearchIcon from '../../assets/svg/SearchIcon.svg';
 import BackArrow from '../../assets/svg/BackArrow.svg';
 import NavIcon from '../../assets/svg/NavIcon.svg';
+import { connect } from 'react-redux';
+
 class LocationIdentity extends Component {
     state = { countryCode: "", address: "", area: "", city: "" }
 
@@ -25,6 +27,7 @@ class LocationIdentity extends Component {
 
 
     render() {
+        console.log(`2ndpage props`, this.props)
         const { t } = this.props;
         const isLoading = this.state.countryCode !== 'AE' ? true : false;
         const renderAlert = () => {
@@ -121,4 +124,11 @@ class LocationIdentity extends Component {
         );
     }
 }
-export default withTranslation()(LocationIdentity);
+function mapStateToProps(state) {
+    console.log(`2nd page`,state);
+    return {login: state.login}
+  }
+  /* const mapStateToProps = (state) => ({
+    login: state.login
+  }) */
+  export default connect(mapStateToProps)(withTranslation()(LocationIdentity));
