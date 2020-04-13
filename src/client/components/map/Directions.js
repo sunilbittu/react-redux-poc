@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  withGoogleMap,
-  withScriptjs,
-  GoogleMap,
-  Polyline,
-  Marker
-} from "react-google-maps";
+import { DirectionsRenderer, GoogleMap, withGoogleMap, withScriptjs } from "react-google-maps";
 
 class Map extends React.Component {
   state = {
@@ -13,8 +7,8 @@ class Map extends React.Component {
   };
 
   path = [
-    { lat: 25.2238073, lng: 55.2831208 },
-    { lat: 25.2531793,lng: 55.3634787}
+    { lat: 25.2238073, lng: 55.365884 },
+    { lat: 25.269620,lng: 55.296875}, 
   ];
 
   velocity = 100;
@@ -22,19 +16,19 @@ class Map extends React.Component {
 
   getDistance = () => {
     // seconds between when the component loaded and now
-    const differentInTime = (new Date() - this.initialDate) / 1000; // pass to seconds
+    const differentInTime = (new Date() - this.initialDate) / 1000; 
     return differentInTime * this.velocity; // d = v*t 
   };
 
-  componentDidMount = () => {
+  /* componentDidMount = () => {
     this.interval = window.setInterval(this.moveObject, 1000);
   };
-
-  componentWillUnmount = () => {
+ */
+  UNSAFE_componentWillUnmount = () => {
     window.clearInterval(this.interval);
   };
 
-  moveObject = () => {
+  /* moveObject = () => {
     const distance = this.getDistance();
     if (!distance) {
       return;
@@ -76,8 +70,9 @@ class Map extends React.Component {
     progress = progress.concat(position);
     this.setState({ progress });
   };
-
-  componentWillMount = () => {
+ */
+  componentDidMount = () => {
+    this.interval = window.setInterval(this.moveObject, 1000);
     this.path = this.path.map((coordinates, i, array) => {
       if (i === 0) {
         return { ...coordinates, distance: 0 }; // it begins here!
@@ -93,10 +88,23 @@ class Map extends React.Component {
         latLong1,
         latLong2
       );
-
-      return { ...coordinates, distance };
+      const distanceInKm = distance/1000;
+      return { ...coordinates, distanceInKm };
     });
-
+    const DirectionsService = new window.google.maps.DirectionsService();
+    DirectionsService.route({
+      origin: new window.google.maps.LatLng(this.path[0].lat, this.path[0].lng),
+      destination: new window.google.maps.LatLng(this.path[1].lat, this.path[1].lng),
+      travelMode: window.google.maps.TravelMode.DRIVING,
+    }, (result, status) => {
+      if (status === window.google.maps.DirectionsStatus.OK) {
+        this.setState({
+          directions: result,
+        });
+      } else {
+        console.error(`error fetching directions ${result}`);
+      }
+    });
     console.log(this.path);
   };
 
@@ -108,13 +116,14 @@ class Map extends React.Component {
       >
         {this.state.progress && (
           <>
-            <Polyline
+            {/* <Polyline
               path={this.state.progress}
               options={{ strokeColor: "#FF0000 " }}
             />
             <Marker
               position={this.state.progress[this.state.progress.length - 1]}
-            />
+            /> */}
+            <DirectionsRenderer directions={this.state.directions} />
           </>
         )}
       </GoogleMap>
@@ -126,7 +135,7 @@ const MapComponent = withScriptjs(withGoogleMap(Map));
 
 export default () => (
   <MapComponent
-    googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyDtPZMH89VcBn6ew0Ex4e1pa_Prvb_exxY&v=3.exp&libraries=geometry,drawing,places"
+    googleMapURL="https://maps.googleapis.com/maps/api/js?key=KEYGOES&v=3.exp&libraries=geometry,drawing,places"
     loadingElement={<div style={{ height: `100%` }} />}
     containerElement={<div style={{ height: `100vh` }} />}
     mapElement={<div style={{ height: `100%` }} />}

@@ -46,9 +46,9 @@ app.get('*', function response(req, res) {
 
   app.post (process.env.contextpath+'/api/logger', function( req, res, next ) {
     console.log('entered logger--'+JSON.stringify(req));
-    {req.body.logs.map((item, key) => {
+    req.body.logs.map((item, key) => {
   logger.log(item.level || 'error',item.format);
-  })}
+  })
 
   return res.send( 'OK' );
 

@@ -7,7 +7,7 @@ import Form from 'react-bootstrap/Form';
 import Image from 'react-bootstrap/Image';
 import Row from 'react-bootstrap/Row';
 // import { withTranslation } from 'react-i18next';
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import FacebookSignIn from "../../components/login/facebook";
 import GoogleSignIn from "../../components/login/google";
 import { connect } from 'react-redux';

@@ -4,7 +4,7 @@ import LandingPage from '../pages/LandingPage';
 import LoginPage from '../pages/login/LoginPage';
 import AccessDenied from '../pages/login/AccessDenied';
 import LocationPage from '../pages/locationIdentify';
-
+import DriverEnroute from '../pages/directions';
 
 
 class InstructorApp extends Component {
@@ -21,7 +21,7 @@ class InstructorApp extends Component {
                      <Route path={"/login"} exact component={LoginPage} />
                      <Route path={"/accessdenied"} exact component={AccessDenied} />
                     <Route path={"/locationidentify"} exact component={LocationPage} />
-                    
+                    <Route path={"/directions"} exact component={DriverEnroute} />
                 </Switch>
             </BrowserRouter>
         )
